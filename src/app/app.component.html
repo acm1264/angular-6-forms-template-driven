@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <!-- Add a Form with the following Inputs (and Validators)
+           1) Mail address (should not be empty and should be an email address)
+           2) A Dropdown which allows the user to select from three different Subscriptions ("Basic", "Advanced", "Pro")
+              Set "Advanced" as Default
+           3) A Password field (should not be empty)
+           4) A Submit Button
+
+           Display a warning message if the Form is invalid AND was touched. Display a warning message below each input if it's invalid.
+
+           Upon submitting the form, you should simply print the Value of the Form to the Console.
+           Optionally, display it in your template.
+      -->
+
+      <!-- have local reference 'formRef' to the form element be assigned to specifically the angular ngForm property 
+      s.t. can use this local reference to determine the validity of the form -->
+      <form #formRef="ngForm" (ngSubmit)="onSubmit()">
+
+        <!-- eemail requires that an actual email is typed (default checks where must have the '@', etc.) -->
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            class="form-control"
+            ngModel
+            name="email"
+            required
+            email
+            #email="ngModel">
+        </div>
+        <span class="help-block" *ngIf="!email.valid && email.touched">Please enter a valid email!</span>
+        
+        
+        <!-- password only requirement is that it is not empty -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            class="form-control"
+            ngModel
+            name="password"
+            required
+            password
+            #password="ngModel">
+        </div>
+        <span class="help-block" *ngIf="!password.valid && password.touched">Password cannot be empty!</span>
+
+
+        <!-- type of subscirption input field (dropdown) -->
+        <div class="form-group">
+          <label for="subTier">Subscription Tier</label>
+          <!-- can use one way binding with the ngModel to give a default value
+          to a property -->
+          <select 
+            id="subTier" 
+            class="form-control"
+            [ngModel]="subTiers[1]"
+            name="subTier">
+            <option *ngFor="let tier of subTiers" [value]="tier">{{tier}}</option>
+          </select>
+        </div>
+
+
+        <!-- button to submit the form -->
+        <button 
+          class="btn btn-primary" 
+          type="submit"
+          [disabled]="!formRef.valid">Submit
+        </button>
+
+      
+
+      </form>
+
+      <div class="row" *ngIf="submitted">
+        <div class="col-xs-12">
+          <h3>Your Data</h3>
+          <p>Email: {{submittedFormContents.email}} </p>
+          <p>Password: {{submittedFormContents.password}}</p>
+          <p>Subscription Tier: {{submittedFormContents.subTier}}</p>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
